@@ -361,7 +361,6 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
       <ul class="nav-links">
         <li><a href="#services">Serviços</a></li>
         <li><a href="#pricing">Planos</a></li>
-        <li><a href="#portfolio">Portfólio</a></li>
         <li><a href="#how">Como funciona</a></li>
         <li><a href="#about">Sobre</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -378,7 +377,6 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
 <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu de navegação">
   <a href="#services" class="mobile-link">Serviços</a>
   <a href="#pricing" class="mobile-link">Planos</a>
-  <a href="#portfolio" class="mobile-link">Portfólio</a>
   <a href="#how" class="mobile-link">Como funciona</a>
   <a href="#about" class="mobile-link">Sobre</a>
   <a href="#faq" class="mobile-link">FAQ</a>
@@ -566,7 +564,7 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
       <h2 class="section-title" id="pricing-title">Escolha o plano ideal</h2>
       <p class="section-sub">Valores transparentes, sem surpresas. Invista no crescimento digital do seu negócio.</p>
     </div>
-    <div class="pricing-grid">
+    <div class="pricing-grid" id="pricingGrid">
       <div class="plan-card reveal reveal-delay-1">
         <p class="plan-name">Inicial</p>
         <div class="plan-price-block"><strong>R$49</strong><span class="cents-right">,90</span></div>
@@ -626,84 +624,6 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
   </div>
 </section>
 
-<!-- PORTFOLIO -->
-<section id="portfolio" class="section" aria-labelledby="portfolio-title">
-  <div class="container">
-    <div class="center reveal">
-      <span class="tag">Portfólio</span>
-      <h2 class="section-title" id="portfolio-title">Sites que já transformamos</h2>
-      <p class="section-sub">Exemplos do que criamos para negócios como o seu.</p>
-    </div>
-    <div class="portfolio-grid">
-      <div class="portfolio-card reveal reveal-delay-1">
-        <div class="portfolio-preview" style="background:linear-gradient(150deg,#080f1c,#0d1b2a)">
-          <div class="pp-inner">
-            <div class="pp-nav">
-              <div class="pp-logo" style="background:var(--blue)"></div>
-              <div class="pp-nav-links"><span></span><span></span><span></span></div>
-            </div>
-            <div class="pp-hero">
-              <div class="pp-title" style="background:rgba(37,99,235,.5);width:70%"></div>
-              <div class="pp-title-2" style="background:rgba(255,255,255,.15)"></div>
-              <div class="pp-btn" style="background:var(--blue)"></div>
-            </div>
-          </div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Barbearia</h3>
-          <p>Site institucional com agendamento via WhatsApp</p>
-          <div class="portfolio-meta">
-            <span class="portfolio-tag">Plano Profissional</span>
-          </div>
-        </div>
-      </div>
-      <div class="portfolio-card reveal reveal-delay-2">
-        <div class="portfolio-preview" style="background:linear-gradient(150deg,#180808,#2a0d0d)">
-          <div class="pp-inner">
-            <div class="pp-nav">
-              <div class="pp-logo" style="background:#dc2626"></div>
-              <div class="pp-nav-links"><span></span><span></span><span></span></div>
-            </div>
-            <div class="pp-hero">
-              <div class="pp-title" style="background:rgba(220,38,38,.5);width:65%"></div>
-              <div class="pp-title-2" style="background:rgba(255,255,255,.12)"></div>
-              <div class="pp-btn" style="background:#dc2626"></div>
-            </div>
-          </div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Restaurante</h3>
-          <p>Cardápio digital com pedidos pelo WhatsApp</p>
-          <div class="portfolio-meta">
-            <span class="portfolio-tag">Plano Premium</span>
-          </div>
-        </div>
-      </div>
-      <div class="portfolio-card reveal reveal-delay-3">
-        <div class="portfolio-preview" style="background:linear-gradient(150deg,#061410,#0b2218)">
-          <div class="pp-inner">
-            <div class="pp-nav">
-              <div class="pp-logo" style="background:#10b981"></div>
-              <div class="pp-nav-links"><span></span><span></span><span></span></div>
-            </div>
-            <div class="pp-hero">
-              <div class="pp-title" style="background:rgba(16,185,129,.45);width:60%"></div>
-              <div class="pp-title-2" style="background:rgba(255,255,255,.1)"></div>
-              <div class="pp-btn" style="background:#10b981"></div>
-            </div>
-          </div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Clínica</h3>
-          <p>Landing page com formulário de agendamento</p>
-          <div class="portfolio-meta">
-            <span class="portfolio-tag">Plano Inicial</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- HOW -->
 <section id="how" class="section" aria-labelledby="how-title">
@@ -915,8 +835,7 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
         <ul>
           <li><a href="#services">Serviços</a></li>
           <li><a href="#pricing">Planos</a></li>
-          <li><a href="#portfolio">Portfólio</a></li>
-          <li><a href="#how">Como funciona</a></li>
+            <li><a href="#how">Como funciona</a></li>
           <li><a href="#about">Sobre</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
@@ -931,7 +850,7 @@ footer{background:var(--surface);border-top:1px solid var(--gray-border);padding
     </div>
     <div class="footer-bottom">
       <p>© 2025 WebCodeX. Todos os direitos reservados.</p>
-      <a href="admin.html" id="admin-lock" aria-label="Painel administrativo" title="" style="opacity:.15;font-size:14px;text-decoration:none;cursor:pointer;transition:opacity .3s;padding:8px;display:inline-block;-webkit-tap-highlight-color:transparent" onmouseenter="this.style.opacity='.4'" onmouseleave="this.style.opacity='.15'">🔒</a>
+      <a href="admin.html" id="admin-lock" aria-label="Painel administrativo" title="" style="opacity:.04;font-size:12px;text-decoration:none;cursor:pointer;transition:opacity .3s;padding:8px;display:inline-block;-webkit-tap-highlight-color:transparent" onmouseenter="this.style.opacity='.3'" onmouseleave="this.style.opacity='.04'">🔒</a>
     </div>
   </div>
 </footer>
@@ -1037,6 +956,39 @@ document.getElementById('formOrc').addEventListener('submit',function(e){
   this.style.display='none';
   document.getElementById('mSuccess').style.display='block';
 });
+
+// PLANOS E PORTFÓLIO DINÂMICOS (vindos do banco de dados)
+function escapeHtmlSite(str){
+  if(str===null||str===undefined) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function checkIconSite(){
+  return '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+}
+
+fetch('/api/planos').then(r=>r.json()).then(planos=>{
+  if(!Array.isArray(planos) || planos.length===0) return; // mantém os planos fixos do HTML
+  const grid=document.getElementById('pricingGrid');
+  grid.innerHTML=planos.map(p=>{
+    const preco=Number(p.preco).toFixed(2).replace('.',',');
+    const [reais,centavos]=preco.split(',');
+    const itens=Array.isArray(p.itens_inclusos)?p.itens_inclusos:[];
+    const msg=encodeURIComponent('Tenho interesse no Plano '+p.nome+'!');
+    return `
+      <div class="plan-card reveal visible">
+        <p class="plan-name">${escapeHtmlSite(p.nome)}</p>
+        <div class="plan-price-block"><strong>R$${reais}</strong><span class="cents-right">,${centavos}</span></div>
+        ${p.descricao?`<p class="plan-monthly">${escapeHtmlSite(p.descricao)}</p>`:''}
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          ${itens.map(i=>`<li>${checkIconSite()}${escapeHtmlSite(i)}</li>`).join('')}
+        </ul>
+        <a href="https://wa.me/5589981225667?text=${msg}" target="_blank" rel="noopener" class="btn btn-outline" style="width:100%;justify-content:center">Escolher plano</a>
+      </div>
+    `;
+  }).join('');
+}).catch(err=>console.error('Erro ao carregar planos:',err));
 
 </script>
 </body>
