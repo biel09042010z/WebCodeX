@@ -1017,6 +1017,21 @@ document.getElementById('formOrc').addEventListener('submit',function(e){
   const tipo=document.getElementById('f-tipo').value.trim();
   const plano=document.querySelector('input[name=fplano]:checked')?.value||'Nao informado';
   const det=document.getElementById('f-det').value.trim()||'Nao informado';
+
+  // Salva o pedido no banco de dados (não bloqueia o envio pelo WhatsApp se falhar)
+  fetch('/api/pedidos',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      nome:nome,
+      telefone:wa,
+      tipo_negocio:tipo,
+      nome_negocio:neg,
+      plano_texto:plano,
+      mensagem:det
+    })
+  }).catch(err=>console.error('Erro ao salvar pedido:',err));
+
   const msg=encodeURIComponent('Ola, WebCodeX! Gostaria de solicitar um orcamento.\n\n*Nome:* '+nome+'\n*Negocio:* '+neg+'\n*WhatsApp:* '+wa+'\n*Tipo:* '+tipo+'\n*Plano:* '+plano+'\n\n*Projeto:*\n'+det);
   window.open('https://wa.me/5589981225667?text='+msg,'_blank');
   this.style.display='none';

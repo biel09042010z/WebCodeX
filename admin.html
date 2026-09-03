@@ -388,6 +388,7 @@
       <button class="nav-btn" data-section="planos">Planos</button>
       <button class="nav-btn" data-section="portfolio">Portfólio</button>
     </nav>
+    <a href="index.html" class="sair" style="text-decoration:none; display:block;">← Voltar ao site</a>
     <button class="sair" id="btn-sair">Sair</button>
   </aside>
 
@@ -616,7 +617,7 @@
         <tr>
           <td>${escapeHtml(p.nome)}</td>
           <td>${escapeHtml(p.email)}${p.telefone ? '<br><span style="color:var(--muted)">' + escapeHtml(p.telefone) + '</span>' : ''}</td>
-          <td>${escapeHtml(p.tipo_negocio || '—')}</td>
+          <td>${escapeHtml(p.nome_negocio || p.tipo_negocio || '—')}${p.nome_negocio && p.tipo_negocio ? '<br><span style="color:var(--muted)">'+escapeHtml(p.tipo_negocio)+'</span>' : ''}</td>
           <td>${escapeHtml(p.plano_nome || '—')}</td>
           <td>
             <select class="status-select" data-id="${p.id}" onchange="atualizarStatusPedido(this)">
