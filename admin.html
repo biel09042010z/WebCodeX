@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F1115;
+    --surface: #171B21;
+    --surface-2: #1D222A;
+    --line: #262C35;
+    --text: #E7EAEE;
+    --muted: #8B93A1;
+    --accent: #4C8DFF;
+    --accent-dim: #2C3E63;
+    --good: #34D399;
+    --warn: #F5A524;
+    --bad: #F26D6D;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* ---------- Tela de login ---------- */
+
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .login-mark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+  }
+
+  .login-box h1 {
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+
+  .login-box p.sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 28px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="number"],
+  input[type="url"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 11px 13px;
+    margin-bottom: 16px;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: var(--radius);
+    border: none;
+    padding: 11px 18px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #061024;
+    width: 100%;
+  }
+
+  .btn-primary:hover { background: #6aa1ff; }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--bad);
+    border: 1px solid var(--bad);
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  #login-error {
+    color: var(--bad);
+    font-size: 13px;
+    margin: -8px 0 16px;
+    display: none;
+  }
+
+  /* ---------- Layout do painel ---------- */
+
+  #app {
+    display: none;
+    min-height: 100vh;
+    grid-template-columns: 220px 1fr;
+    display: none;
+  }
+
+  #app.visible { display: grid; }
+
+  aside {
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    color: var(--accent);
+    margin-bottom: 32px;
+    padding: 0 8px;
+  }
+
+  nav button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 10px 10px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+  }
+
+  nav button.active {
+    background: var(--accent-dim);
+    color: var(--text);
+  }
+
+  nav button:hover:not(.active) {
+    color: var(--text);
+  }
+
+  aside .sair {
+    margin-top: auto;
+    color: var(--muted);
+    background: transparent;
+    text-align: left;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  aside .sair:hover { color: var(--bad); }
+
+  main {
+    padding: 32px 40px;
+    max-width: 980px;
+  }
+
+  main header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+
+  main header p {
+    color: var(--muted);
+    margin: 4px 0 0;
+    font-size: 14px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: 14px;
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    text-align: left;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 0 12px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .badge-novo { background: rgba(76,141,255,.15); color: var(--accent); }
+  .badge-em_contato { background: rgba(245,165,36,.15); color: var(--warn); }
+  .badge-fechado { background: rgba(52,211,153,.15); color: var(--good); }
+  .badge-recusado { background: rgba(242,109,109,.15); color: var(--bad); }
+
+  select.status-select {
+    margin: 0;
+    padding: 5px 8px;
+    font-size: 13px;
+    width: auto;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(6,8,11,.65);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10;
+  }
+
+  .modal-backdrop.visible { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .modal h3 { margin-bottom: 18px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .modal-actions button { flex: 1; }
+
+  .portfolio-item-actions, .plano-item-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 760px) {
+    #app.visible { display: block; }
+    aside {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      flex-direction: row;
+      overflow-x: auto;
+      padding: 14px 16px;
+    }
+    .brand { display: none; }
+    nav { display: flex; gap: 4px; }
+    nav button { white-space: nowrap; margin-bottom: 0; }
+    aside .sair { margin-top: 0; }
+    main { padding: 24px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TELA DE LOGIN ============ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-mark">PLATAFORMA</div>
+    <h1>Entrar no painel</h1>
+    <p class="sub">Acesso restrito à administração.</p>
+
+    <form id="login-form">
+      <label for="login-email">Email</label>
+      <input type="email" id="login-email" required autocomplete="username">
+
+      <label for="login-senha">Senha</label>
+      <input type="password" id="login-senha" required autocomplete="current-password">
+
+      <p id="login-error">Email ou senha inválidos.</p>
+
+      <button type="submit" class="btn-primary" id="login-btn">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ PAINEL ============ -->
+<div id="app">
+  <aside>
+    <div class="brand">PLATAFORMA</div>
+    <nav>
+      <button class="nav-btn active" data-section="pedidos">Pedidos</button>
+      <button class="nav-btn" data-section="planos">Planos</button>
+      <button class="nav-btn" data-section="portfolio">Portfólio</button>
+    </nav>
+    <button class="sair" id="btn-sair">Sair</button>
+  </aside>
+
+  <main>
+
+    <!-- ---------- PEDIDOS ---------- -->
+    <section id="section-pedidos" class="section active">
+      <header>
+        <div>
+          <h2>Pedidos de orçamento</h2>
+          <p>Solicitações recebidas pelo formulário do site.</p>
+        </div>
+      </header>
+
+      <div class="card" style="padding:0;">
+        <table id="tabela-pedidos">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Contato</th>
+              <th>Negócio</th>
+              <th>Plano</th>
+              <th>Status</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="pedidos-tbody"></tbody>
+        </table>
+        <div class="empty" id="pedidos-empty" style="display:none;">Nenhum pedido recebido ainda.</div>
+      </div>
+    </section>
+
+    <!-- ---------- PLANOS ---------- -->
+    <section id="section-planos" class="section">
+      <header>
+        <div>
+          <h2>Planos</h2>
+          <p>Pacotes exibidos no site para o cliente escolher.</p>
+        </div>
+        <button class="btn-primary" style="width:auto;" id="btn-novo-plano">+ Novo plano</button>
+      </header>
+
+      <div id="planos-lista"></div>
+      <div class="empty" id="planos-empty" style="display:none;">Nenhum plano cadastrado ainda.</div>
+    </section>
+
+    <!-- ---------- PORTFÓLIO ---------- -->
+    <section id="section-portfolio" class="section">
+      <header>
+        <div>
+          <h2>Portfólio</h2>
+          <p>Sites já entregues, exibidos como prova social no site.</p>
+        </div>
+        <button class="btn-primary" style="width:auto;" id="btn-novo-portfolio">+ Novo item</button>
+      </header>
+
+      <div id="portfolio-lista"></div>
+      <div class="empty" id="portfolio-empty" style="display:none;">Nenhum item no portfólio ainda.</div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODAL: PLANO ============ -->
+<div class="modal-backdrop" id="modal-plano">
+  <div class="modal">
+    <h3 id="modal-plano-titulo">Novo plano</h3>
+    <form id="form-plano">
+      <input type="hidden" id="plano-id">
+      <label for="plano-nome">Nome do plano</label>
+      <input type="text" id="plano-nome" required>
+
+      <label for="plano-preco">Preço (R$)</label>
+      <input type="number" id="plano-preco" step="0.01" min="0" required>
+
+      <label for="plano-descricao">Descrição</label>
+      <textarea id="plano-descricao"></textarea>
+
+      <label for="plano-itens">Itens inclusos (um por linha)</label>
+      <textarea id="plano-itens" placeholder="Domínio próprio&#10;Hospedagem&#10;5 páginas"></textarea>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="fecharModal('modal-plano')">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MODAL: PORTFÓLIO ============ -->
+<div class="modal-backdrop" id="modal-portfolio">
+  <div class="modal">
+    <h3 id="modal-portfolio-titulo">Novo item do portfólio</h3>
+    <form id="form-portfolio">
+      <input type="hidden" id="portfolio-id">
+      <label for="portfolio-nome-cliente">Nome do cliente</label>
+      <input type="text" id="portfolio-nome-cliente" required>
+
+      <label for="portfolio-nome-site">Nome do site</label>
+      <input type="text" id="portfolio-nome-site" required>
+
+      <label for="portfolio-url">URL do site</label>
+      <input type="url" id="portfolio-url" placeholder="https://">
+
+      <label for="portfolio-imagem">URL da imagem de capa</label>
+      <input type="url" id="portfolio-imagem" placeholder="https://">
+
+      <label for="portfolio-categoria">Categoria</label>
+      <input type="text" id="portfolio-categoria" placeholder="Ex: Barbearia, Advocacia...">
+
+      <label for="portfolio-descricao">Descrição</label>
+      <textarea id="portfolio-descricao"></textarea>
+
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <input type="checkbox" id="portfolio-destaque" style="width:auto; margin:0;">
+        Destacar este item
+      </label>
+
+      <div class="modal-actions" style="margin-top:16px;">
+        <button type="button" class="btn-secondary" onclick="fecharModal('modal-portfolio')">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ---------- Estado ----------
+  let sessaoAdmin = null; // { email }
+
+  const STATUS_LABEL = {
+    novo: 'Novo',
+    em_contato: 'Em contato',
+    fechado: 'Fechado',
+    recusado: 'Recusado'
+  };
+
+  // ---------- Login ----------
+  const loginForm = document.getElementById('login-form');
+  const loginError = document.getElementById('login-error');
+  const loginBtn = document.getElementById('login-btn');
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loginError.style.display = 'none';
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Entrando...';
+
+    const email = document.getElementById('login-email').value.trim();
+    const senha = document.getElementById('login-senha').value;
+
+    try {
+      const resp = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        loginError.textContent = data.erro || 'Email ou senha inválidos.';
+        loginError.style.display = 'block';
+        return;
+      }
+
+      sessaoAdmin = { email: data.email };
+      sessionStorage.setItem('sessaoAdmin', JSON.stringify(sessaoAdmin));
+      entrarNoPainel();
+    } catch (err) {
+      loginError.textContent = 'Não foi possível conectar. Tente novamente.';
+      loginError.style.display = 'block';
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Entrar';
+    }
+  });
+
+  function entrarNoPainel() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    carregarPedidos();
+    carregarPlanos();
+    carregarPortfolio();
+  }
+
+  document.getElementById('btn-sair').addEventListener('click', () => {
+    sessionStorage.removeItem('sessaoAdmin');
+    location.reload();
+  });
+
+  // Mantém sessão ao recarregar a página (sessionStorage dura só a aba aberta)
+  window.addEventListener('DOMContentLoaded', () => {
+    const salvo = sessionStorage.getItem('sessaoAdmin');
+    if (salvo) {
+      sessaoAdmin = JSON.parse(salvo);
+      entrarNoPainel();
+    }
+  });
+
+  // ---------- Navegação entre seções ----------
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('section-' + btn.dataset.section).classList.add('active');
+    });
+  });
+
+  // ---------- Pedidos ----------
+  async function carregarPedidos() {
+    try {
+      const resp = await fetch('/api/pedidos');
+      const pedidos = await resp.json();
+      const tbody = document.getElementById('pedidos-tbody');
+      const vazio = document.getElementById('pedidos-empty');
+
+      if (!pedidos.length) {
+        tbody.innerHTML = '';
+        vazio.style.display = 'block';
+        return;
+      }
+      vazio.style.display = 'none';
+
+      tbody.innerHTML = pedidos.map(p => `
+        <tr>
+          <td>${escapeHtml(p.nome)}</td>
+          <td>${escapeHtml(p.email)}${p.telefone ? '<br><span style="color:var(--muted)">' + escapeHtml(p.telefone) + '</span>' : ''}</td>
+          <td>${escapeHtml(p.tipo_negocio || '—')}</td>
+          <td>${escapeHtml(p.plano_nome || '—')}</td>
+          <td>
+            <select class="status-select" data-id="${p.id}" onchange="atualizarStatusPedido(this)">
+              ${Object.entries(STATUS_LABEL).map(([valor, rotulo]) =>
+                `<option value="${valor}" ${p.status === valor ? 'selected' : ''}>${rotulo}</option>`
+              ).join('')}
+            </select>
+          </td>
+          <td style="color:var(--muted); white-space:nowrap;">${formatarData(p.criado_em)}</td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Erro ao carregar pedidos', err);
+    }
+  }
+
+  async function atualizarStatusPedido(select) {
+    const id = select.dataset.id;
+    const status = select.value;
+    try {
+      await fetch('/api/pedidos', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      });
+    } catch (err) {
+      console.error('Erro ao atualizar status', err);
+    }
+  }
+
+  // ---------- Planos ----------
+  async function carregarPlanos() {
+    try {
+      const resp = await fetch('/api/planos');
+      const planos = await resp.json();
+      const lista = document.getElementById('planos-lista');
+      const vazio = document.getElementById('planos-empty');
+
+      if (!planos.length) {
+        lista.innerHTML = '';
+        vazio.style.display = 'block';
+        return;
+      }
+      vazio.style.display = 'none';
+
+      lista.innerHTML = planos.map(p => `
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; gap:16px;">
+            <div>
+              <h3 style="font-size:16px;">${escapeHtml(p.nome)} — R$ ${Number(p.preco).toFixed(2)}</h3>
+              <p style="color:var(--muted); font-size:13px; margin:6px 0 0;">${escapeHtml(p.descricao || '')}</p>
+            </div>
+            <div class="plano-item-actions">
+              <button class="btn-secondary" onclick='abrirModalPlano(${JSON.stringify(p)})'>Editar</button>
+              <button class="btn-danger" onclick="excluirPlano(${p.id})">Excluir</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Erro ao carregar planos', err);
+    }
+  }
+
+  document.getElementById('btn-novo-plano').addEventListener('click', () => abrirModalPlano());
+
+  function abrirModalPlano(plano) {
+    document.getElementById('modal-plano-titulo').textContent = plano ? 'Editar plano' : 'Novo plano';
+    document.getElementById('plano-id').value = plano ? plano.id : '';
+    document.getElementById('plano-nome').value = plano ? plano.nome : '';
+    document.getElementById('plano-preco').value = plano ? plano.preco : '';
+    document.getElementById('plano-descricao').value = plano ? plano.descricao || '' : '';
+    document.getElementById('plano-itens').value = plano && plano.itens_inclusos ? plano.itens_inclusos.join('\n') : '';
+    document.getElementById('modal-plano').classList.add('visible');
+  }
+
+  document.getElementById('form-plano').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('plano-id').value;
+    const corpo = {
+      nome: document.getElementById('plano-nome').value.trim(),
+      preco: parseFloat(document.getElementById('plano-preco').value),
+      descricao: document.getElementById('plano-descricao').value.trim(),
+      itens_inclusos: document.getElementById('plano-itens').value.split('\n').map(i => i.trim()).filter(Boolean)
+    };
+
+    try {
+      await fetch('/api/planos', {
+        method: id ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(id ? { ...corpo, id } : corpo)
+      });
+      fecharModal('modal-plano');
+      carregarPlanos();
+    } catch (err) {
+      console.error('Erro ao salvar plano', err);
+    }
+  });
+
+  async function excluirPlano(id) {
+    if (!confirm('Excluir este plano?')) return;
+    try {
+      await fetch('/api/planos', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      carregarPlanos();
+    } catch (err) {
+      console.error('Erro ao excluir plano', err);
+    }
+  }
+
+  // ---------- Portfólio ----------
+  async function carregarPortfolio() {
+    try {
+      const resp = await fetch('/api/portfolio');
+      const itens = await resp.json();
+      const lista = document.getElementById('portfolio-lista');
+      const vazio = document.getElementById('portfolio-empty');
+
+      if (!itens.length) {
+        lista.innerHTML = '';
+        vazio.style.display = 'block';
+        return;
+      }
+      vazio.style.display = 'none';
+
+      lista.innerHTML = itens.map(p => `
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; gap:16px;">
+            <div>
+              <h3 style="font-size:16px;">${escapeHtml(p.nome_site)} ${p.destaque ? '<span class="badge badge-fechado">Destaque</span>' : ''}</h3>
+              <p style="color:var(--muted); font-size:13px; margin:6px 0 0;">Cliente: ${escapeHtml(p.nome_cliente)} · ${escapeHtml(p.categoria || 'Sem categoria')}</p>
+            </div>
+            <div class="portfolio-item-actions">
+              <button class="btn-secondary" onclick='abrirModalPortfolio(${JSON.stringify(p)})'>Editar</button>
+              <button class="btn-danger" onclick="excluirPortfolio(${p.id})">Excluir</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Erro ao carregar portfólio', err);
+    }
+  }
+
+  document.getElementById('btn-novo-portfolio').addEventListener('click', () => abrirModalPortfolio());
+
+  function abrirModalPortfolio(item) {
+    document.getElementById('modal-portfolio-titulo').textContent = item ? 'Editar item' : 'Novo item do portfólio';
+    document.getElementById('portfolio-id').value = item ? item.id : '';
+    document.getElementById('portfolio-nome-cliente').value = item ? item.nome_cliente : '';
+    document.getElementById('portfolio-nome-site').value = item ? item.nome_site : '';
+    document.getElementById('portfolio-url').value = item ? item.url_site || '' : '';
+    document.getElementById('portfolio-imagem').value = item ? item.imagem_capa || '' : '';
+    document.getElementById('portfolio-categoria').value = item ? item.categoria || '' : '';
+    document.getElementById('portfolio-descricao').value = item ? item.descricao || '' : '';
+    document.getElementById('portfolio-destaque').checked = item ? !!item.destaque : false;
+    document.getElementById('modal-portfolio').classList.add('visible');
+  }
+
+  document.getElementById('form-portfolio').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('portfolio-id').value;
+    const corpo = {
+      nome_cliente: document.getElementById('portfolio-nome-cliente').value.trim(),
+      nome_site: document.getElementById('portfolio-nome-site').value.trim(),
+      url_site: document.getElementById('portfolio-url').value.trim(),
+      imagem_capa: document.getElementById('portfolio-imagem').value.trim(),
+      categoria: document.getElementById('portfolio-categoria').value.trim(),
+      descricao: document.getElementById('portfolio-descricao').value.trim(),
+      destaque: document.getElementById('portfolio-destaque').checked
+    };
+
+    try {
+      await fetch('/api/portfolio', {
+        method: id ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(id ? { ...corpo, id } : corpo)
+      });
+      fecharModal('modal-portfolio');
+      carregarPortfolio();
+    } catch (err) {
+      console.error('Erro ao salvar item do portfólio', err);
+    }
+  });
+
+  async function excluirPortfolio(id) {
+    if (!confirm('Excluir este item do portfólio?')) return;
+    try {
+      await fetch('/api/portfolio', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      carregarPortfolio();
+    } catch (err) {
+      console.error('Erro ao excluir item do portfólio', err);
+    }
+  }
+
+  // ---------- Utilitários ----------
+  function fecharModal(id) {
+    document.getElementById(id).classList.remove('visible');
+  }
+
+  function formatarData(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+
+</body>
+</html>
